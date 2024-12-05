@@ -1,6 +1,7 @@
 .main {
-  min-height: 100vh;
-  padding: 2rem;
+  min-block-size: 100vh;
+  padding-inline: 2rem;
+  padding-block: 2rem;
   transition: all 0.3s ease;
 }
 
@@ -15,31 +16,34 @@
 }
 
 .content {
-  max-width: 1200px;
-  margin: 0 auto;
+  max-inline-size: 1200px;
+  margin-block: 0;
+  margin-inline: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 4rem;
-  padding: 2rem;
+  padding-block: 2rem;
+  padding-inline: 2rem;
   position: relative;
   z-index: 10;
 }
 
 .hero {
   text-align: center;
-  max-width: 800px;
+  max-inline-size: 800px;
 }
 
 .title {
   font-size: 3.5rem;
   font-weight: 800;
   line-height: 1.2;
-  margin-bottom: 1.5rem;
+  margin-block-end: 1.5rem;
 }
 
 .gradient {
   background: linear-gradient(to right, #60a5fa, #a855f7);
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -47,28 +51,29 @@
 .description {
   font-size: 1.25rem;
   color: #94a3b8;
-  margin-bottom: 2rem;
+  margin-block-end: 2rem;
 }
 
 .preview {
   width: 100%;
-  max-width: 600px;
+  max-inline-size: 600px;
   backdrop-filter: blur(16px);
   border-radius: 24px;
-  padding: 2rem;
+  padding-inline: 2rem;
+  padding-block: 2rem;
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .themeToggle {
   position: fixed;
-  top: 2rem;
-  right: 2rem;
+  inset-block-start: 2rem;
+  inset-inline-end: 2rem;
   background: rgba(255, 255, 255, 0.1);
   border: none;
   border-radius: 50%;
-  width: 48px;
-  height: 48px;
+  inline-size: 48px;
+  block-size: 48px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -95,11 +100,13 @@
   }
 
   .content {
-    padding: 1rem;
+    padding-inline: 1rem;
+    padding-block: 1rem;
     gap: 2rem;
   }
 
   .preview {
-    padding: 1rem;
+    padding-inline: 1rem;
+    padding-block: 1rem;
   }
 }

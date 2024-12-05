@@ -1,5 +1,5 @@
 .main {
-  min-height: 100vh;
+  min-block-size: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;

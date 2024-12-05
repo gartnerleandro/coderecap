@@ -20,10 +20,11 @@
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
   border-radius: 24px;
-  padding: 1.5rem;
-  width: 100%;
-  max-width: 500px;
-  min-width: 485px;
+  padding-block: 1.5rem;
+  padding-inline: 1.5rem;
+  inline-size: 100%;
+  max-inline-size: 500px;
+  min-inline-size: 485px;
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow:
     0 8px 32px 0 rgba(31, 38, 135, 0.37),
@@ -35,7 +36,7 @@
   display: flex;
   align-items: flex-start;
   gap: 1rem;
-  margin-bottom: 1.5rem;
+  margin-block-end: 1.5rem;
 }
 
 .avatar {
@@ -88,8 +89,9 @@
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 0.75rem;
-  margin-bottom: 1.5rem;
-  padding: 0.75rem;
+  margin-block-end: 1.5rem;
+  padding-inline: 0.75rem;
+  padding-block: 0.75rem;
   background: rgba(255, 255, 255, 0.05);
   border-radius: 16px;
 }
@@ -147,7 +149,7 @@
 
 .chartContainer {
   transform: translateZ(5px);
-  margin-bottom: 1.5rem;
+  margin-block-end: 1.5rem;
 }
 
 .activityStats h3,
@@ -527,7 +529,8 @@
 
 @media (max-width: 400px) {
   .card {
-    padding: 1rem;
+    padding-block: 1rem;
+    padding-inline: 1rem;
   }
 
   .name {
