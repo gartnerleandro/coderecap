@@ -96,7 +96,7 @@
 
 @media (min-width: 400px) {
   .mainStats {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
@@ -150,6 +150,7 @@
   margin-bottom: 1.5rem;
 }
 
+.activityStats h3,
 .chartContainer h3 {
   color: rgba(255, 255, 255, 0.8);
   margin-bottom: 1rem;
@@ -292,6 +293,7 @@
   color: rgba(0, 0, 0, 0.8);
 }
 
+.card.light .activityStats h3,
 .card.light .chartContainer h3 {
   color: #1a1a1a;
 }

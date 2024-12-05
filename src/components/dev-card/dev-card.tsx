@@ -23,7 +23,7 @@ import {
   FaWhatsapp,
   FaTimes,
 } from "react-icons/fa";
-import { FaCodeMerge, FaThreads } from "react-icons/fa6";
+import { FaThreads } from "react-icons/fa6";
 import { BarChart, Bar, XAxis, Tooltip, ResponsiveContainer } from "recharts";
 import * as htmlToImage from "html-to-image";
 
@@ -193,7 +193,7 @@ export default function DevCard({
           <div className={styles.mainStats}>
             <div className={styles.stat}>
               <FaUsers />
-              <span>Followers</span>
+              <span>Seguidores</span>
               <strong>{stats.followers}</strong>
             </div>
             <div className={styles.stat}>
@@ -202,32 +202,32 @@ export default function DevCard({
               <strong>{stats.repositories}</strong>
             </div>
             <div className={styles.stat}>
-              <FaCodeMerge />
-              <span>PRs</span>
-              <strong>{stats.pullRequestsMerged}</strong>
-            </div>
-            <div className={styles.stat}>
               <FaCode />
-              <span>Language</span>
+              <span>Lenguaje</span>
               <strong>{stats.mostUsedLanguage}</strong>
             </div>
           </div>
 
           <div className={styles.activityStats}>
+            <h3>Pico de actividad</h3>
             <div className={styles.activityTime}>
               <div className={styles.activityItem}>
                 <FaCalendar />
-                <span>Most Active: {stats.mostActiveDay}</span>
+                <span>
+                  <strong>Día:</strong> {stats.mostActiveDay}
+                </span>
               </div>
               <div className={styles.activityItem}>
                 <FaClock />
-                <span>Peak Hour: {stats.mostActiveHour}:00</span>
+                <span>
+                  <strong>Hora:</strong> {stats.mostActiveHour}:00
+                </span>
               </div>
             </div>
           </div>
 
           <div className={styles.chartContainer}>
-            <h3>Weekly Activity</h3>
+            <h3>Actividad semanal</h3>
             <ResponsiveContainer width="100%" height={120}>
               <BarChart data={contributionsByDayData}>
                 <XAxis dataKey="name" />
@@ -243,54 +243,55 @@ export default function DevCard({
               <strong>{stats.pullRequestsMerged}</strong>
             </div>
             <div className={styles.contributionItem}>
-              <span>Issues Open</span>
+              <span>Issues Abiertos</span>
               <strong>{stats.issuesOpen}</strong>
             </div>
             <div className={styles.contributionItem}>
-              <span>Issues Closed</span>
+              <span>Issues Cerrados</span>
               <strong>{stats.issuesClosed}</strong>
             </div>
           </div>
         </motion.div>
       </Atropos>
 
-      {withMenu && (
-        <div className={styles.floatingMenu}>
-          <button
-            className={styles.menuButton}
-            onClick={() => setShowMenu(!showMenu)}
-          >
-            <FaEllipsisV />
-          </button>
+      <div className={styles.floatingMenu}>
+        <button
+          className={styles.menuButton}
+          onClick={() => setShowMenu(!showMenu)}
+        >
+          <FaEllipsisV />
+        </button>
 
-          <AnimatePresence>
-            {showMenu && (
-              <motion.div
-                className={styles.menu}
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-              >
-                <button
-                  className={styles.menuItem}
-                  onClick={handleDownload}
-                  disabled={isDownloading}
-                >
-                  <FaDownload />{" "}
-                  {isDownloading ? "Descargando..." : "Descargar"}
-                </button>
-                <button className={styles.menuItem} onClick={handleShare}>
-                  <FaShare /> Compartir
-                </button>
-                <button className={styles.menuItem} onClick={toggleTheme}>
-                  <FaPalette /> Cambiar a {theme === "dark" ? "light" : "dark"}{" "}
-                  mode
-                </button>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-      )}
+        <AnimatePresence>
+          {showMenu && (
+            <motion.div
+              className={styles.menu}
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+            >
+              {withMenu && (
+                <>
+                  <button
+                    className={styles.menuItem}
+                    onClick={handleDownload}
+                    disabled={isDownloading}
+                  >
+                    <FaDownload />{" "}
+                    {isDownloading ? "Descargando..." : "Descargar"}
+                  </button>
+                  <button className={styles.menuItem} onClick={handleShare}>
+                    <FaShare /> Compartir
+                  </button>
+                </>
+              )}
+              <button className={styles.menuItem} onClick={toggleTheme}>
+                <FaPalette /> {theme === "dark" ? "Modo claro" : "Modo oscuro"}
+              </button>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
 
       <div ref={sharePopoverRef} popover="auto" className={styles.sharePopover}>
         <button
