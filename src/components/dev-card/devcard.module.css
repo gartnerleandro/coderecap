@@ -255,6 +255,7 @@
   color: #f59e0b;
 }
 
+.card.light .activityTime,
 .card.light .mainStats {
   background: rgba(0, 0, 0, 0.05);
 }

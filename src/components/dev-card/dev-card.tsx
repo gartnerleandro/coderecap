@@ -275,8 +275,7 @@ export default function DevCard({ stats }: { stats: GitHubStats }) {
                 <FaShare /> Compartir
               </button>
               <button className={styles.menuItem} onClick={toggleTheme}>
-                <FaPalette /> Cambiar a {theme === "dark" ? "light" : "dark"}{" "}
-                mode
+                <FaPalette /> {theme === "dark" ? "modo claro" : "modo oscuro"}{" "}
               </button>
             </motion.div>
           )}
