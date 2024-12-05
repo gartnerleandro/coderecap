@@ -23,7 +23,7 @@ import {
   FaWhatsapp,
   FaTimes,
 } from "react-icons/fa";
-import { FaThreads } from "react-icons/fa6";
+import { FaCodeMerge, FaThreads } from "react-icons/fa6";
 import { BarChart, Bar, XAxis, Tooltip, ResponsiveContainer } from "recharts";
 import * as htmlToImage from "html-to-image";
 
@@ -198,6 +198,11 @@ export default function DevCard({ stats }: { stats: GitHubStats }) {
                 <FaCodeBranch />
                 <span>Repos</span>
                 <strong>{stats.repositories}</strong>
+              </div>
+              <div className={styles.stat}>
+                <FaCodeMerge />
+                <span>PRs</span>
+                <strong>{stats.pullRequestsMerged}</strong>
               </div>
               <div className={styles.stat}>
                 <FaCode />
