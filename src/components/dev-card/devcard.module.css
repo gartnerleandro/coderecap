@@ -1,5 +1,4 @@
 .container {
-  min-height: 100vh;
   width: 100%;
   display: flex;
   align-items: center;
@@ -24,6 +23,7 @@
   padding: 1.5rem;
   width: 100%;
   max-width: 500px;
+  min-width: 485px;
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow:
     0 8px 32px 0 rgba(31, 38, 135, 0.37),
@@ -569,5 +569,11 @@
 
   .rating {
     display: none;
+  }
+}
+
+@media (max-width: 490px) {
+  .card {
+    min-width: auto;
   }
 }

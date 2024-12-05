@@ -6,6 +6,8 @@ import DevCard from "@/components/dev-card/dev-card";
 import DevCardSkeleton from "@/components/dev-card/dev-card-skeleton";
 import CodeBackground from "@/components/background/code-background";
 
+import styles from "./page.module.css";
+
 export default function SharedCard() {
   const [githubStats, setGithubStats] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -28,7 +30,7 @@ export default function SharedCard() {
   }, [username]);
 
   return (
-    <main>
+    <main className={styles.main}>
       <CodeBackground />
       <div>
         {loading ? (

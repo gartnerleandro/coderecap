@@ -5,6 +5,8 @@ import DevCard from "@/components/dev-card/dev-card";
 import DevCardSkeleton from "@/components/dev-card/dev-card-skeleton";
 import CodeBackground from "@/components/background/code-background";
 
+import styles from "./page.module.css";
+
 export default function Card() {
   const [githubStats, setGithubStats] = useState(null);
 
@@ -18,7 +20,7 @@ export default function Card() {
   }, []);
 
   return (
-    <main>
+    <main className={styles.main}>
       <CodeBackground />
       <div>
         {githubStats ? <DevCard stats={githubStats} /> : <DevCardSkeleton />}

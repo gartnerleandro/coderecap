@@ -239,7 +239,7 @@ export default function DevCard({
 
           <div className={styles.contributions}>
             <div className={styles.contributionItem}>
-              <span>PRs Merged</span>
+              <span>PRs Cerradas</span>
               <strong>{stats.pullRequestsMerged}</strong>
             </div>
             <div className={styles.contributionItem}>
