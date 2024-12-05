@@ -1,7 +1,16 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { useState } from "react";
+
+import dynamic from "next/dynamic";
+
+const MotionDiv = dynamic(
+  () => import("framer-motion").then((mod) => mod.motion.div),
+  {
+    ssr: false,
+  }
+);
+
 import SignIn from "@/components/sign-in/sign-in";
 import DevCard from "@/components/dev-card/dev-card";
 import CodeBackground from "@/components/background/code-background";
@@ -53,7 +62,7 @@ export default function Home() {
       <CodeBackground />
 
       <div className={styles.content}>
-        <motion.div
+        <MotionDiv
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
@@ -69,15 +78,15 @@ export default function Home() {
             mundo
           </p>
 
-          <motion.div
+          <MotionDiv
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3 }}
             className={styles.cta}
           >
             <SignIn />
-          </motion.div>
-        </motion.div>
+          </MotionDiv>
+        </MotionDiv>
 
         <DevCard stats={exampleStats} withMenu={false} />
       </div>
