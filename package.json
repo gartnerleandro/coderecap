@@ -12,8 +12,6 @@
   "dependencies": {
     "@heroicons/react": "^2.2.0",
     "@octokit/rest": "^21.0.2",
-    "@react-three/drei": "^9.119.0",
-    "@react-three/fiber": "^8.17.10",
     "@tabler/icons-react": "^3.24.0",
     "@tsparticles/react": "^3.0.0",
     "@tsparticles/slim": "^3.7.1",
@@ -22,16 +20,13 @@
     "firebase": "^11.0.2",
     "framer-motion": "^11.13.1",
     "html-to-image": "^1.11.11",
-    "lottie-react": "^2.4.0",
-    "maath": "^0.10.8",
     "next": "15.0.3",
     "next-auth": "^5.0.0-beta.25",
     "react": "19.0.0-rc-66855b96-20241106",
     "react-dom": "19.0.0-rc-66855b96-20241106",
     "react-icons": "^5.4.0",
     "react-loading-skeleton": "^3.5.0",
-    "recharts": "^2.14.1",
-    "three": "^0.171.0"
+    "recharts": "^2.14.1"
   },
   "devDependencies": {
     "@types/node": "^20",
