@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import DevCard from "@/components/dev-card/dev-card";
 import DevCardSkeleton from "@/components/dev-card/dev-card-skeleton";
+import CodeBackground from "@/components/background/code-background";
 
 export default function SharedCard() {
   const [githubStats, setGithubStats] = useState(null);
@@ -28,6 +29,7 @@ export default function SharedCard() {
 
   return (
     <main>
+      <CodeBackground />
       <div>
         {loading ? (
           <DevCardSkeleton />
