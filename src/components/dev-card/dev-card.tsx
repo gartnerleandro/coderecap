@@ -2,7 +2,7 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import dynamic from "next/dynamic";
 import Atropos from "atropos/react";
 import {
   FaStar,
@@ -27,6 +27,21 @@ import {
 import { FaThreads } from "react-icons/fa6";
 import { BarChart, Bar, XAxis, Tooltip, ResponsiveContainer } from "recharts";
 import * as htmlToImage from "html-to-image";
+
+const MotionArticle = dynamic(
+  () => import("framer-motion").then((mod) => mod.motion.article),
+  { ssr: false }
+);
+
+const MotionDiv = dynamic(
+  () => import("framer-motion").then((mod) => mod.motion.div),
+  { ssr: false }
+);
+
+const AnimatePresence = dynamic(
+  () => import("framer-motion").then((mod) => mod.AnimatePresence),
+  { ssr: false }
+);
 
 import styles from "./devcard.module.css";
 import "atropos/css";
@@ -167,7 +182,7 @@ export default function DevCard({
         highlight={false}
         shadow={false}
       >
-        <motion.article
+        <MotionArticle
           ref={cardRef}
           className={`${styles.card} ${styles[theme]}`}
         >
@@ -255,7 +270,7 @@ export default function DevCard({
               <strong>{stats.issuesClosed}</strong>
             </div>
           </div>
-        </motion.article>
+        </MotionArticle>
       </Atropos>
 
       <div className={styles.floatingMenu}>
@@ -268,7 +283,7 @@ export default function DevCard({
 
         <AnimatePresence>
           {showMenu && (
-            <motion.div
+            <MotionDiv
               className={styles.menu}
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
@@ -292,7 +307,7 @@ export default function DevCard({
               <button className={styles.menuItem} onClick={toggleTheme}>
                 <FaPalette /> {theme === "dark" ? "Modo claro" : "Modo oscuro"}
               </button>
-            </motion.div>
+            </MotionDiv>
           )}
         </AnimatePresence>
       </div>
