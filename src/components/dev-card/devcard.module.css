@@ -164,7 +164,7 @@
   position: absolute;
   top: 1rem;
   right: 1rem;
-  z-index: 10;
+  z-index: 1000;
 }
 
 .menuButton {
@@ -230,6 +230,58 @@
 
 .card.light {
   background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+.card.light .name {
+  color: #1a1a1a;
+}
+
+.card.light .username {
+  color: rgba(0, 0, 0, 0.7);
+}
+
+.card.light .location {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.card.light .rating {
+  color: #f59e0b;
+}
+
+.card.light .mainStats {
+  background: rgba(0, 0, 0, 0.05);
+}
+.card.light .stat strong,
+.card.light .stat {
+  color: #1a1a1a;
+}
+
+.card.light .stat span {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.card.light .activityStats {
+  color: #1a1a1a;
+}
+
+.card.light .activityItem {
+  color: rgba(0, 0, 0, 0.8);
+}
+
+.card.light .chartContainer h3 {
+  color: #1a1a1a;
+}
+
+.card.light .contributions {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.card.light .contributionItem span {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.card.light .contributionItem strong {
   color: #1a1a1a;
 }
 
@@ -262,4 +314,181 @@
 .menuItem:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(5px);
+}
+
+.sharePopover {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  padding-block: 2rem;
+  padding-inline: 2rem;
+  border-radius: 1rem;
+  min-inline-size: 400px;
+  max-inline-size: 95vw;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+}
+
+.sharePopover::backdrop {
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(5px);
+}
+
+.shareTitle {
+  color: white;
+  margin-block: 0 1.5rem;
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+.closeButton {
+  position: absolute;
+  inset-block-start: 1rem;
+  inset-inline-end: 1rem;
+  padding: 0.5rem;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.closeButton:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.urlContainer {
+  display: flex;
+  gap: 0.5rem;
+  margin-block-end: 2rem;
+}
+
+.urlInput {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.05);
+  color: white;
+  font-size: 0.9rem;
+  outline: none;
+}
+
+.copyButton {
+  padding-inline: 0.75rem;
+  border-radius: 0.5rem;
+  border: none;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.copyButton:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.socialButtons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-block-end: 0;
+}
+
+.socialButton {
+  block-size: 2.5rem;
+  inline-size: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.socialButton:hover {
+  background: var(--social-color);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Tema claro */
+.card.light .socialButton {
+  background: rgba(0, 0, 0, 0.05);
+  color: #1a1a1a;
+}
+
+.card.light .socialButton:hover {
+  color: white;
+}
+
+/* Ajustes responsive */
+@media (max-width: 480px) {
+  .socialButtons {
+    grid-template-columns: 1fr;
+  }
+
+  .socialButton {
+    width: 100%;
+  }
+}
+
+/* Tema claro */
+.card.light .closeButton {
+  background: rgba(0, 0, 0, 0.1);
+  color: #1a1a1a;
+}
+
+.card.light .closeButton:hover {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.floatingMenu {
+  position: fixed;
+  inset-block-start: 1rem;
+  inset-inline-end: 1rem;
+  z-index: 1000;
+}
+
+.menuButton {
+  block-size: 2.5rem;
+  inline-size: 2.5rem;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  color: rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.menuButton:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
