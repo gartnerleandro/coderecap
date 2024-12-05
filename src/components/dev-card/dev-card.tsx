@@ -1,6 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useState, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import Atropos from "atropos/react";
 import {
   FaStar,
@@ -10,8 +11,14 @@ import {
   FaUsers,
   FaClock,
   FaCalendar,
+  FaEllipsisV,
+  FaDownload,
+  FaShare,
+  FaPalette,
 } from "react-icons/fa";
 import { BarChart, Bar, XAxis, Tooltip, ResponsiveContainer } from "recharts";
+import * as htmlToImage from "html-to-image";
+
 import styles from "./devcard.module.css";
 import "atropos/css";
 
@@ -34,12 +41,90 @@ interface GitHubStats {
 }
 
 export default function DevCard({ stats }: { stats: GitHubStats }) {
+  const [showMenu, setShowMenu] = useState(false);
+  const [isDownloading, setIsDownloading] = useState(false);
+  const cardRef = useRef<HTMLDivElement>(null);
+
   const contributionsByDayData = Object.entries(stats.contributionsByDay).map(
     ([day, count]) => ({
       name: day.slice(0, 3),
       value: count,
     })
   );
+
+  const handleDownload = async () => {
+    if (!cardRef.current) return;
+
+    try {
+      setIsDownloading(true);
+      setShowMenu(false);
+
+      // Ocultar temporalmente el menú para la captura
+      const menuElement = cardRef.current.querySelector(
+        `.${styles.menuContainer}`
+      );
+      if (menuElement instanceof HTMLElement) {
+        menuElement.style.display = "none";
+      }
+
+      const dataUrl = await htmlToImage.toPng(cardRef.current, {
+        quality: 1,
+        pixelRatio: 2,
+        style: {
+          transform: "scale(1)", // Resetear transformaciones para la captura
+        },
+      });
+
+      // Restaurar el menú
+      if (menuElement instanceof HTMLElement) {
+        menuElement.style.display = "";
+      }
+
+      // Crear enlace de descarga
+      const link = document.createElement("a");
+      link.download = `${stats.username}-devcard.png`;
+      link.href = dataUrl;
+      link.click();
+    } catch (error) {
+      console.error("Error al generar la imagen:", error);
+    } finally {
+      setIsDownloading(false);
+    }
+  };
+
+  const handleShare = async () => {
+    if (!cardRef.current) return;
+
+    try {
+      setShowMenu(false);
+      const dataUrl = await htmlToImage.toPng(cardRef.current);
+
+      // Convertir dataURL a Blob
+      const blob = await (await fetch(dataUrl)).blob();
+      const file = new File([blob], "devcard.png", { type: "image/png" });
+
+      if (navigator.share) {
+        await navigator.share({
+          files: [file],
+          title: "Mi DevCard",
+          text: "Mira mi tarjeta de desarrollador",
+        });
+      } else {
+        // Fallback para navegadores que no soportan Web Share API
+        const url = window.URL.createObjectURL(blob);
+        window.open(url, "_blank");
+      }
+    } catch (error) {
+      console.error("Error al compartir:", error);
+    }
+  };
+
+  const [theme, setTheme] = useState<"dark" | "light">("dark");
+
+  const toggleTheme = () => {
+    setTheme((prev) => (prev === "dark" ? "light" : "dark"));
+    setShowMenu(false);
+  };
 
   return (
     <div className={styles.container}>
@@ -49,11 +134,48 @@ export default function DevCard({ stats }: { stats: GitHubStats }) {
         shadow={false}
       >
         <motion.div
-          className={styles.card}
+          ref={cardRef}
+          className={`${styles.card} ${styles[theme]}`}
           initial={{ scale: 0.9, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 0.3 }}
         >
+          <div className={styles.menuContainer}>
+            <button
+              className={styles.menuButton}
+              onClick={() => setShowMenu(!showMenu)}
+              disabled={isDownloading}
+            >
+              <FaEllipsisV />
+            </button>
+
+            <AnimatePresence>
+              {showMenu && (
+                <motion.div
+                  className={styles.menu}
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                >
+                  <button
+                    className={styles.menuItem}
+                    onClick={handleDownload}
+                    disabled={isDownloading}
+                  >
+                    <FaDownload />{" "}
+                    {isDownloading ? "Descargando..." : "Descargar"}
+                  </button>
+                  <button className={styles.menuItem} onClick={handleShare}>
+                    <FaShare /> Compartir
+                  </button>
+                  <button className={styles.menuItem} onClick={toggleTheme}>
+                    <FaPalette /> Cambiar tema
+                  </button>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+
           <div className={styles.header}>
             <img
               src={stats.avatar}

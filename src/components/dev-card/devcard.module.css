@@ -13,6 +13,7 @@
 }
 
 .card {
+  position: relative;
   transform-style: preserve-3d;
   perspective: 1000px;
   background: rgba(255, 255, 255, 0.1);
@@ -157,4 +158,108 @@
   font-size: 1.2rem;
   color: white;
   margin-top: 0.25rem;
+}
+
+.menuContainer {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 10;
+}
+
+.menuButton {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  padding: 0.5rem;
+  transition: color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.menuButton:hover {
+  color: white;
+}
+
+.menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 0.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.5rem;
+  min-width: 150px;
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.menuItem {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+  transition: all 0.2s;
+  border-radius: 8px;
+  font-size: 0.9rem;
+}
+
+.menuItem:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+}
+
+.menuItem svg {
+  font-size: 1rem;
+}
+
+.card.dark {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+}
+
+.card.light {
+  background: rgba(255, 255, 255, 0.95);
+  color: #1a1a1a;
+}
+
+.card.light .menuButton,
+.card.light .menuItem {
+  color: #1a1a1a;
+}
+
+.card.light .menu {
+  background: rgba(255, 255, 255, 0.95);
+}
+
+.card.light .menuItem:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+/* Ajusta otros elementos para el tema claro según sea necesario */
+.card.light .stat,
+.card.light .activityItem,
+.card.light .contributionItem {
+  color: #1a1a1a;
+}
+
+.card.light .username,
+.card.light .location {
+  color: rgba(0, 0, 0, 0.7);
+}
+
+/* Estado de descarga */
+.menuItem:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
