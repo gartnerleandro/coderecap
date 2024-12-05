@@ -48,7 +48,13 @@ interface GitHubStats {
   issuesClosed: number;
 }
 
-export default function DevCard({ stats }: { stats: GitHubStats }) {
+export default function DevCard({
+  stats,
+  withMenu = true,
+}: {
+  stats: GitHubStats;
+  withMenu?: boolean;
+}) {
   const [showMenu, setShowMenu] = useState(false);
   const [copied, setCopied] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
@@ -105,7 +111,7 @@ export default function DevCard({ stats }: { stats: GitHubStats }) {
   };
 
   const handleCopyUrl = async () => {
-    const url = `${window.location.origin}/card/${stats.username}`;
+    const url = `${window.location.origin}/share/${stats.username}`;
     await navigator.clipboard.writeText(url);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
@@ -116,7 +122,7 @@ export default function DevCard({ stats }: { stats: GitHubStats }) {
     setShowMenu(false);
   };
 
-  const shareUrl = `${window.location.origin}/card/${stats.username}`;
+  const shareUrl = `${window.location.origin}/share/${stats.username}`;
   const shareText = `Mira mi DevCard`;
   const encodedUrl = encodeURIComponent(shareUrl);
   const encodedText = encodeURIComponent(shareText);
@@ -154,138 +160,137 @@ export default function DevCard({ stats }: { stats: GitHubStats }) {
   };
 
   return (
-    <>
-      <div className={styles.container}>
-        <Atropos
-          className={styles.atroposWrapper}
-          highlight={false}
-          shadow={false}
-        >
-          <motion.div
-            ref={cardRef}
-            className={`${styles.card} ${styles[theme]}`}
+    <div className={styles.container}>
+      <Atropos
+        className={styles.atroposWrapper}
+        highlight={false}
+        shadow={false}
+      >
+        <motion.div ref={cardRef} className={`${styles.card} ${styles[theme]}`}>
+          <div className={styles.header}>
+            <img
+              src={stats.avatar}
+              alt={stats.name}
+              width={80}
+              height={80}
+              className={styles.avatar}
+            />
+            <div className={styles.info}>
+              <h2 className={styles.name}>{stats.name}</h2>
+              <p className={styles.username}>@{stats.username}</p>
+              {stats.location && (
+                <p className={styles.location}>
+                  <FaMapMarkerAlt /> {stats.location}
+                </p>
+              )}
+            </div>
+            <div className={styles.rating}>
+              <FaStar />
+              <span>{stats.rating}</span>
+            </div>
+          </div>
+
+          <div className={styles.mainStats}>
+            <div className={styles.stat}>
+              <FaUsers />
+              <span>Followers</span>
+              <strong>{stats.followers}</strong>
+            </div>
+            <div className={styles.stat}>
+              <FaCodeBranch />
+              <span>Repos</span>
+              <strong>{stats.repositories}</strong>
+            </div>
+            <div className={styles.stat}>
+              <FaCodeMerge />
+              <span>PRs</span>
+              <strong>{stats.pullRequestsMerged}</strong>
+            </div>
+            <div className={styles.stat}>
+              <FaCode />
+              <span>Language</span>
+              <strong>{stats.mostUsedLanguage}</strong>
+            </div>
+          </div>
+
+          <div className={styles.activityStats}>
+            <div className={styles.activityTime}>
+              <div className={styles.activityItem}>
+                <FaCalendar />
+                <span>Most Active: {stats.mostActiveDay}</span>
+              </div>
+              <div className={styles.activityItem}>
+                <FaClock />
+                <span>Peak Hour: {stats.mostActiveHour}:00</span>
+              </div>
+            </div>
+          </div>
+
+          <div className={styles.chartContainer}>
+            <h3>Weekly Activity</h3>
+            <ResponsiveContainer width="100%" height={120}>
+              <BarChart data={contributionsByDayData}>
+                <XAxis dataKey="name" />
+                <Tooltip />
+                <Bar dataKey="value" fill="#60A5FA" />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+
+          <div className={styles.contributions}>
+            <div className={styles.contributionItem}>
+              <span>PRs Merged</span>
+              <strong>{stats.pullRequestsMerged}</strong>
+            </div>
+            <div className={styles.contributionItem}>
+              <span>Issues Open</span>
+              <strong>{stats.issuesOpen}</strong>
+            </div>
+            <div className={styles.contributionItem}>
+              <span>Issues Closed</span>
+              <strong>{stats.issuesClosed}</strong>
+            </div>
+          </div>
+        </motion.div>
+      </Atropos>
+
+      {withMenu && (
+        <div className={styles.floatingMenu}>
+          <button
+            className={styles.menuButton}
+            onClick={() => setShowMenu(!showMenu)}
           >
-            <div className={styles.header}>
-              <img
-                src={stats.avatar}
-                alt={stats.name}
-                width={80}
-                height={80}
-                className={styles.avatar}
-              />
-              <div className={styles.info}>
-                <h2 className={styles.name}>{stats.name}</h2>
-                <p className={styles.username}>@{stats.username}</p>
-                {stats.location && (
-                  <p className={styles.location}>
-                    <FaMapMarkerAlt /> {stats.location}
-                  </p>
-                )}
-              </div>
-              <div className={styles.rating}>
-                <FaStar />
-                <span>{stats.rating}</span>
-              </div>
-            </div>
+            <FaEllipsisV />
+          </button>
 
-            <div className={styles.mainStats}>
-              <div className={styles.stat}>
-                <FaUsers />
-                <span>Followers</span>
-                <strong>{stats.followers}</strong>
-              </div>
-              <div className={styles.stat}>
-                <FaCodeBranch />
-                <span>Repos</span>
-                <strong>{stats.repositories}</strong>
-              </div>
-              <div className={styles.stat}>
-                <FaCodeMerge />
-                <span>PRs</span>
-                <strong>{stats.pullRequestsMerged}</strong>
-              </div>
-              <div className={styles.stat}>
-                <FaCode />
-                <span>Language</span>
-                <strong>{stats.mostUsedLanguage}</strong>
-              </div>
-            </div>
-
-            <div className={styles.activityStats}>
-              <div className={styles.activityTime}>
-                <div className={styles.activityItem}>
-                  <FaCalendar />
-                  <span>Most Active: {stats.mostActiveDay}</span>
-                </div>
-                <div className={styles.activityItem}>
-                  <FaClock />
-                  <span>Peak Hour: {stats.mostActiveHour}:00</span>
-                </div>
-              </div>
-            </div>
-
-            <div className={styles.chartContainer}>
-              <h3>Weekly Activity</h3>
-              <ResponsiveContainer width="100%" height={120}>
-                <BarChart data={contributionsByDayData}>
-                  <XAxis dataKey="name" />
-                  <Tooltip />
-                  <Bar dataKey="value" fill="#60A5FA" />
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-
-            <div className={styles.contributions}>
-              <div className={styles.contributionItem}>
-                <span>PRs Merged</span>
-                <strong>{stats.pullRequestsMerged}</strong>
-              </div>
-              <div className={styles.contributionItem}>
-                <span>Issues Open</span>
-                <strong>{stats.issuesOpen}</strong>
-              </div>
-              <div className={styles.contributionItem}>
-                <span>Issues Closed</span>
-                <strong>{stats.issuesClosed}</strong>
-              </div>
-            </div>
-          </motion.div>
-        </Atropos>
-      </div>
-
-      <div className={styles.floatingMenu}>
-        <button
-          className={styles.menuButton}
-          onClick={() => setShowMenu(!showMenu)}
-        >
-          <FaEllipsisV />
-        </button>
-
-        <AnimatePresence>
-          {showMenu && (
-            <motion.div
-              className={styles.menu}
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-            >
-              <button
-                className={styles.menuItem}
-                onClick={handleDownload}
-                disabled={isDownloading}
+          <AnimatePresence>
+            {showMenu && (
+              <motion.div
+                className={styles.menu}
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
               >
-                <FaDownload /> {isDownloading ? "Descargando..." : "Descargar"}
-              </button>
-              <button className={styles.menuItem} onClick={handleShare}>
-                <FaShare /> Compartir
-              </button>
-              <button className={styles.menuItem} onClick={toggleTheme}>
-                <FaPalette /> {theme === "dark" ? "modo claro" : "modo oscuro"}{" "}
-              </button>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
+                <button
+                  className={styles.menuItem}
+                  onClick={handleDownload}
+                  disabled={isDownloading}
+                >
+                  <FaDownload />{" "}
+                  {isDownloading ? "Descargando..." : "Descargar"}
+                </button>
+                <button className={styles.menuItem} onClick={handleShare}>
+                  <FaShare /> Compartir
+                </button>
+                <button className={styles.menuItem} onClick={toggleTheme}>
+                  <FaPalette /> Cambiar a {theme === "dark" ? "light" : "dark"}{" "}
+                  mode
+                </button>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      )}
 
       <div ref={sharePopoverRef} popover="auto" className={styles.sharePopover}>
         <button
@@ -324,6 +329,6 @@ export default function DevCard({ stats }: { stats: GitHubStats }) {
           ))}
         </div>
       </div>
-    </>
+    </div>
   );
 }

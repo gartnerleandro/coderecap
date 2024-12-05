@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { Octokit } from "@octokit/rest";
 import dayjs from "dayjs";
+import { db } from "@/lib/firebase";
+import { doc, setDoc } from "firebase/firestore";
 
 import "dayjs/locale/es";
 
@@ -94,7 +96,7 @@ export async function GET() {
       prs.data.total_count + issues.data.total_count + repos.data.length;
     const rating = Math.min(5, (totalContributions / 100) * 5).toFixed(2);
 
-    return NextResponse.json({
+    const statsData = {
       name: user.data.name,
       username: user.data.login,
       avatar: user.data.avatar_url,
@@ -114,8 +116,21 @@ export async function GET() {
       issuesClosed: issues.data.items.filter(
         (issue) => issue.state === "closed"
       ).length,
-    });
-  } catch {
+      updatedAt: new Date().toISOString(),
+    };
+
+    // Guarda los datos en Firestore
+    await setDoc(
+      doc(db, "githubStats", statsData.username as string),
+      statsData,
+      {
+        merge: true, // Esto actualizará los datos existentes o creará un nuevo documento si no existe
+      }
+    );
+
+    return NextResponse.json(statsData);
+  } catch (error) {
+    console.error("Error:", error);
     return NextResponse.json(
       { error: "Error al obtener datos" },
       { status: 500 }
