@@ -1,6 +1,9 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { Octokit } from "@octokit/rest";
+import dayjs from "dayjs";
+
+import "dayjs/locale/es";
 
 export async function GET() {
   const session = await auth();
@@ -14,6 +17,8 @@ export async function GET() {
   });
 
   try {
+    const lastYear = dayjs().startOf("year").format("YYYY-MM-DD");
+
     const [user, repos] = await Promise.all([
       octokit.users.getAuthenticated(),
       octokit.repos.listForAuthenticatedUser(),
@@ -21,10 +26,10 @@ export async function GET() {
 
     const [prs, issues] = await Promise.all([
       octokit.search.issuesAndPullRequests({
-        q: `author:${user?.data?.login} type:pr is:merged`,
+        q: `author:${user?.data?.login} type:pr is:merged created:>=${lastYear}`,
       }),
       octokit.search.issuesAndPullRequests({
-        q: `author:${user?.data?.login} type:issue`,
+        q: `author:${user?.data?.login} type:issue created:>=${lastYear}`,
       }),
     ]);
 
@@ -44,9 +49,9 @@ export async function GET() {
 
     const contributionTimes = [...prs.data.items, ...issues.data.items].reduce(
       (acc, item) => {
-        const date = new Date(item.created_at);
-        const dayOfWeek = date.toLocaleDateString("es-ES", { weekday: "long" });
-        const hour = date.getHours();
+        const date = dayjs(item.created_at);
+        const dayOfWeek = date.locale("es").format("dddd");
+        const hour = date.hour();
 
         acc.days[dayOfWeek] = (acc.days[dayOfWeek] || 0) + 1;
         acc.hours[hour] = (acc.hours[hour] || 0) + 1;
@@ -59,7 +64,25 @@ export async function GET() {
       }
     );
 
-    const mostActiveDay = Object.entries(contributionTimes.days).sort(
+    const daysOrder = [
+      "lunes",
+      "martes",
+      "miércoles",
+      "jueves",
+      "viernes",
+      "sábado",
+      "domingo",
+    ];
+
+    const contributionsByDay = daysOrder.reduce(
+      (acc, day) => {
+        acc[day] = contributionTimes.days[day] || 0;
+        return acc;
+      },
+      {} as Record<string, number>
+    );
+
+    const mostActiveDay = Object.entries(contributionsByDay).sort(
       ([, a], [, b]) => b - a
     )[0][0];
 
@@ -83,10 +106,9 @@ export async function GET() {
       mostUsedLanguage: mostUsedLanguageName,
       mostActiveDay,
       mostActiveHour,
-      contributionsByDay: contributionTimes.days,
+      contributionsByDay,
       contributionsByHour: contributionTimes.hours,
-      pullRequestsMerged: prs.data.items.filter((pr) => pr.state === "closed")
-        .length,
+      pullRequestsMerged: prs.data.items.length,
       issuesOpen: issues.data.items.filter((issue) => issue.state === "open")
         .length,
       issuesClosed: issues.data.items.filter(

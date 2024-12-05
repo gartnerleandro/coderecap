@@ -70,7 +70,6 @@ export default function DevCard({ stats }: { stats: GitHubStats }) {
       setIsDownloading(true);
       setShowMenu(false);
 
-      // Ocultar temporalmente el menú para la captura
       const menuElement = cardRef.current.querySelector(
         `.${styles.menuContainer}`
       );
@@ -82,16 +81,14 @@ export default function DevCard({ stats }: { stats: GitHubStats }) {
         quality: 1,
         pixelRatio: 2,
         style: {
-          transform: "scale(1)", // Resetear transformaciones para la captura
+          transform: "scale(1)",
         },
       });
 
-      // Restaurar el menú
       if (menuElement instanceof HTMLElement) {
         menuElement.style.display = "";
       }
 
-      // Crear enlace de descarga
       const link = document.createElement("a");
       link.download = `${stats.username}-devcard.png`;
       link.href = dataUrl;
@@ -167,9 +164,6 @@ export default function DevCard({ stats }: { stats: GitHubStats }) {
           <motion.div
             ref={cardRef}
             className={`${styles.card} ${styles[theme]}`}
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.3 }}
           >
             <div className={styles.header}>
               <img

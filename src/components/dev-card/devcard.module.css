@@ -5,6 +5,8 @@
   align-items: center;
   justify-content: center;
   padding: 2rem;
+
+  --base-color: #bdbaba;
 }
 
 .atroposWrapper {
@@ -73,6 +75,10 @@
   gap: 0.5rem;
   color: #ffc107;
   font-size: 1.25rem;
+}
+
+.skeleton {
+  transform: initial !important;
 }
 
 .mainStats {
