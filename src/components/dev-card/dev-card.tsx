@@ -101,7 +101,7 @@ export default function DevCard({
       link.href = dataUrl;
       link.click();
     } catch (error) {
-      console.error("Error al generar la imagen:", error);
+      return new Error((error as Error).message);
     } finally {
       setIsDownloading(false);
     }

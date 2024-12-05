@@ -16,7 +16,9 @@ export default function Card() {
       .then((data) => {
         setGithubStats(data);
       })
-      .catch(console.error);
+      .catch((error) => {
+        return new Error(error);
+      });
   }, []);
 
   return (

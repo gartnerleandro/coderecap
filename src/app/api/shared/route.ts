@@ -26,10 +26,6 @@ export async function GET(request: Request) {
 
     return NextResponse.json(docSnap.data());
   } catch (error) {
-    console.error("Error:", error);
-    return NextResponse.json(
-      { error: "Error al obtener datos" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: error }, { status: 500 });
   }
 }

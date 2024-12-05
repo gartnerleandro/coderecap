@@ -23,8 +23,9 @@ export default function SharedCard() {
           setLoading(false);
         })
         .catch((error) => {
-          console.error("Error fetching shared data:", error);
           setLoading(false);
+
+          return new Error(error);
         });
     }
   }, [username]);
