@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { useState, useRef } from "react";
@@ -166,13 +167,16 @@ export default function DevCard({
         highlight={false}
         shadow={false}
       >
-        <motion.div ref={cardRef} className={`${styles.card} ${styles[theme]}`}>
-          <div className={styles.header}>
+        <motion.article
+          ref={cardRef}
+          className={`${styles.card} ${styles[theme]}`}
+        >
+          <header className={styles.header}>
             <img
               src={stats.avatar}
               alt={stats.name}
-              width={80}
-              height={80}
+              width="80"
+              height="80"
               className={styles.avatar}
             />
             <div className={styles.info}>
@@ -188,7 +192,7 @@ export default function DevCard({
               <FaStar />
               <span>{stats.rating}</span>
             </div>
-          </div>
+          </header>
 
           <div className={styles.mainStats}>
             <div className={styles.stat}>
@@ -251,7 +255,7 @@ export default function DevCard({
               <strong>{stats.issuesClosed}</strong>
             </div>
           </div>
-        </motion.div>
+        </motion.article>
       </Atropos>
 
       <div className={styles.floatingMenu}>
