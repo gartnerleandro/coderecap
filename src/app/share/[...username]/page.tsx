@@ -1,16 +1,15 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
+import { useParams } from "next/navigation";
 import DevCard from "@/components/dev-card/dev-card";
 import DevCardSkeleton from "@/components/dev-card/dev-card-skeleton";
-import styles from "./page.module.css";
 
 export default function SharedCard() {
   const [githubStats, setGithubStats] = useState(null);
   const [loading, setLoading] = useState(true);
-  const router = useRouter();
-  const { username } = router.query;
+  const params = useParams();
+  const username = params.username as string;
 
   useEffect(() => {
     if (username) {
@@ -28,8 +27,8 @@ export default function SharedCard() {
   }, [username]);
 
   return (
-    <main className={styles.main}>
-      <div className={styles.content}>
+    <main>
+      <div>
         {loading ? (
           <DevCardSkeleton />
         ) : githubStats ? (

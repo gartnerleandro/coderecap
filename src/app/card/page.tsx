@@ -4,8 +4,6 @@ import { useEffect, useState } from "react";
 import DevCard from "@/components/dev-card/dev-card";
 import DevCardSkeleton from "@/components/dev-card/dev-card-skeleton";
 
-import styles from "./page.module.css";
-
 export default function Card() {
   const [githubStats, setGithubStats] = useState(null);
 
@@ -19,8 +17,8 @@ export default function Card() {
   }, []);
 
   return (
-    <main className={styles.main}>
-      <div className={styles.content}>
+    <main>
+      <div>
         {githubStats ? <DevCard stats={githubStats} /> : <DevCardSkeleton />}
       </div>
     </main>
