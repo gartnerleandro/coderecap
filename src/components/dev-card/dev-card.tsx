@@ -127,7 +127,7 @@ export default function DevCard({
   };
 
   const handleCopyUrl = async () => {
-    const url = `${window.location.origin}/share/${stats.username}`;
+    const url = `${window?.location?.origin}/share/${stats.username}`;
     await navigator.clipboard.writeText(url);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
@@ -138,7 +138,7 @@ export default function DevCard({
     setShowMenu(false);
   };
 
-  const shareUrl = `${window.location.origin}/share/${stats.username}`;
+  const shareUrl = `${window?.location?.origin}/share/${stats.username}`;
   const shareText = `Mira mi DevCard`;
   const encodedUrl = encodeURIComponent(shareUrl);
   const encodedText = encodeURIComponent(shareText);
@@ -172,7 +172,9 @@ export default function DevCard({
   ];
 
   const handleSocialShare = (url: string) => {
-    window.open(url, "_blank", "width=600,height=400");
+    if (typeof window !== undefined) {
+      window?.open(url, "_blank");
+    }
   };
 
   return (
