@@ -10,6 +10,7 @@
     "prepare": "husky"
   },
   "dependencies": {
+    "@emotion/react": "^11.13.5",
     "@heroicons/react": "^2.2.0",
     "@octokit/rest": "^21.0.2",
     "@tabler/icons-react": "^3.24.0",
