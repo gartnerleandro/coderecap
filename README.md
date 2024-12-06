@@ -8,9 +8,16 @@ Visita la aplicación en: [https://coderecap.vercel.app/](https://coderecap.verc
 
 ## 📸 Vista previa
 
+### Modo Oscuro
+
 <div align="center">
-  <img src="./public/preview-dark.png" alt="DevCard Vista Modo Oscuro" width="400"/>
-  <img src="./public/preview-light.png" alt="DevCard Vista Modo Claro" width="400"/>
+  <img src="https://github.com/user-attachments/assets/8501130b-c20b-412f-a542-4ba3d41d3f4d" alt="DevCard Vista Modo Oscuro" width="900"/>
+</div>
+
+### Modo Claro
+
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/81841cc3-a2ab-4cae-9f5d-e8f17b453d66" alt="DevCard Vista Modo Claro" width="900"/>
 </div>
 
 ## 📖 Sobre el Proyecto
