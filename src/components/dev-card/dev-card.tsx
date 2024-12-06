@@ -138,6 +138,16 @@ export default function DevCard({
     setShowMenu(false);
   };
 
+  if (typeof window === undefined) {
+    return null;
+  }
+
+  const handleSocialShare = (url: string) => {
+    if (typeof window !== undefined) {
+      window?.open(url, "_blank");
+    }
+  };
+
   const shareUrl = `${window?.location?.origin}/share/${stats.username}`;
   const shareText = `Mira mi DevCard`;
   const encodedUrl = encodeURIComponent(shareUrl);
@@ -170,12 +180,6 @@ export default function DevCard({
       color: "#000000",
     },
   ];
-
-  const handleSocialShare = (url: string) => {
-    if (typeof window !== undefined) {
-      window?.open(url, "_blank");
-    }
-  };
 
   return (
     <div className={styles.container}>
