@@ -1,11 +1,18 @@
 "use client";
 
 import { useState } from "react";
-
 import dynamic from "next/dynamic";
+import isValidProp from "@emotion/is-prop-valid";
 
 const MotionDiv = dynamic(
   () => import("framer-motion").then((mod) => mod.motion.div),
+  {
+    ssr: false,
+  }
+);
+
+const MotionConfig = dynamic(
+  () => import("framer-motion").then((mod) => mod.MotionConfig),
   {
     ssr: false,
   }
@@ -58,38 +65,40 @@ export default function Home() {
   const [theme] = useState<"dark" | "light">("dark");
 
   return (
-    <main className={`${styles.main} ${styles[theme]}`}>
-      <CodeBackground />
+    <MotionConfig isValidProp={isValidProp}>
+      <main className={`${styles.main} ${styles[theme]}`}>
+        <CodeBackground />
 
-      <div className={styles.content}>
-        <MotionDiv
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className={styles.hero}
-        >
-          <h1 className={styles.title}>
-            Crea tu propia <br />
-            <span className={styles.gradient}>tarjeta de desarrollador</span>
-          </h1>
-
-          <p className={styles.description}>
-            Muestra tus estadísticas de GitHub con estilo y compártelas con el
-            mundo
-          </p>
-
+        <div className={styles.content}>
           <MotionDiv
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.3 }}
-            className={styles.cta}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className={styles.hero}
           >
-            <SignIn />
-          </MotionDiv>
-        </MotionDiv>
+            <h1 className={styles.title}>
+              Crea tu propia <br />
+              <span className={styles.gradient}>tarjeta de desarrollador</span>
+            </h1>
 
-        <DevCard stats={exampleStats} withMenu={false} />
-      </div>
-    </main>
+            <p className={styles.description}>
+              Muestra tus estadísticas de GitHub con estilo y compártelas con el
+              mundo
+            </p>
+
+            <MotionDiv
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.3 }}
+              className={styles.cta}
+            >
+              <SignIn />
+            </MotionDiv>
+          </MotionDiv>
+
+          <DevCard stats={exampleStats} withMenu={false} />
+        </div>
+      </main>
+    </MotionConfig>
   );
 }
