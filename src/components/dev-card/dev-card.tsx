@@ -107,6 +107,10 @@ export default function DevCard({
         menuElement.style.display = "none";
       }
 
+      const originalBackground = cardRef.current.style.background;
+
+      cardRef.current.style.background = theme === "dark" ? "#000" : "#fff";
+
       const dataUrl = await htmlToImage.toPng(cardRef.current, {
         quality: 1,
         pixelRatio: 2,
@@ -114,6 +118,8 @@ export default function DevCard({
           transform: "scale(1)",
         },
       });
+
+      cardRef.current.style.background = originalBackground;
 
       if (menuElement instanceof HTMLElement) {
         menuElement.style.display = "";
