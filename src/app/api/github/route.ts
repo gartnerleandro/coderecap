@@ -37,10 +37,13 @@ export async function GET() {
 
     const [user, repos] = await Promise.all([
       octokit.users.getAuthenticated(),
-      octokit.repos.listForAuthenticatedUser(),
+      octokit.paginate(octokit.repos.listForAuthenticatedUser, {
+        visibility: "all",
+        per_page: 100,
+      }),
     ]);
 
-    const commitsPromises = repos.data.map((repo) =>
+    const commitsPromises = repos.map((repo) =>
       octokit
         .paginate(octokit.repos.listCommits, {
           owner: repo.owner.login,
@@ -67,7 +70,7 @@ export async function GET() {
     // Aplanar el array de commits
     const allCommits = repoCommits.flat();
 
-    const mostUsedLanguage = repos.data.reduce(
+    const mostUsedLanguage = repos.reduce(
       (acc, repo) => {
         if (repo.language) {
           acc[repo.language] = (acc[repo.language] || 0) + 1;
@@ -136,10 +139,7 @@ export async function GET() {
     )[0][0];
 
     const totalContributions =
-      prsItems.length +
-      issuesItems.length +
-      repos.data.length +
-      allCommits.length;
+      prsItems.length + issuesItems.length + repos.length + allCommits.length;
     const rating = Math.min(5, (totalContributions / 100) * 5).toFixed(2);
 
     const statsData = {
@@ -149,7 +149,7 @@ export async function GET() {
       bio: user.data.bio,
       location: user.data.location,
       followers: user.data.followers,
-      repositories: repos.data.length,
+      repositories: repos.length,
       rating,
       mostUsedLanguage: mostUsedLanguageName,
       mostActiveDay,
