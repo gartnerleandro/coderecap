@@ -7,6 +7,20 @@ import { doc, setDoc } from "firebase/firestore";
 
 import "dayjs/locale/es";
 
+interface PullRequestOrIssue {
+  created_at: string;
+}
+
+interface Commit {
+  commit: {
+    author: {
+      date?: string;
+    } | null;
+  };
+}
+
+type ContributionItem = PullRequestOrIssue | Commit;
+
 export async function GET() {
   const session = await auth();
 
@@ -26,14 +40,32 @@ export async function GET() {
       octokit.repos.listForAuthenticatedUser(),
     ]);
 
-    const [prs, issues] = await Promise.all([
-      octokit.search.issuesAndPullRequests({
+    const commitsPromises = repos.data.map((repo) =>
+      octokit
+        .paginate(octokit.repos.listCommits, {
+          owner: repo.owner.login,
+          repo: repo.name,
+          author: user.data.login,
+          since: lastYear,
+          per_page: 100,
+        })
+        .catch(() => [])
+    );
+
+    const [prsItems, issuesItems, ...repoCommits] = await Promise.all([
+      octokit.paginate(octokit.search.issuesAndPullRequests, {
         q: `author:${user?.data?.login} type:pr is:merged created:>=${lastYear}`,
+        per_page: 100,
       }),
-      octokit.search.issuesAndPullRequests({
+      octokit.paginate(octokit.search.issuesAndPullRequests, {
         q: `author:${user?.data?.login} type:issue created:>=${lastYear}`,
+        per_page: 100,
       }),
+      ...commitsPromises,
     ]);
+
+    // Aplanar el array de commits
+    const allCommits = repoCommits.flat();
 
     const mostUsedLanguage = repos.data.reduce(
       (acc, repo) => {
@@ -49,9 +81,20 @@ export async function GET() {
       mostUsedLanguage[a] > mostUsedLanguage[b] ? a : b
     );
 
-    const contributionTimes = [...prs.data.items, ...issues.data.items].reduce(
+    // Actualizar contributionTimes para incluir commits
+    const contributionTimes = [
+      ...prsItems,
+      ...issuesItems,
+      ...allCommits,
+    ].reduce(
       (acc, item) => {
-        const date = dayjs(item.created_at);
+        const getDate = (item: ContributionItem) => {
+          if ("created_at" in item) return item.created_at;
+          if ("commit" in item) return item.commit?.author?.date;
+          return null;
+        };
+
+        const date = dayjs(getDate(item));
         const dayOfWeek = date.locale("es").format("dddd");
         const hour = date.hour();
 
@@ -93,7 +136,10 @@ export async function GET() {
     )[0][0];
 
     const totalContributions =
-      prs.data.total_count + issues.data.total_count + repos.data.length;
+      prsItems.length +
+      issuesItems.length +
+      repos.data.length +
+      allCommits.length;
     const rating = Math.min(5, (totalContributions / 100) * 5).toFixed(2);
 
     const statsData = {
@@ -110,12 +156,11 @@ export async function GET() {
       mostActiveHour,
       contributionsByDay,
       contributionsByHour: contributionTimes.hours,
-      pullRequestsMerged: prs.data.items.length,
-      issuesOpen: issues.data.items.filter((issue) => issue.state === "open")
+      pullRequestsMerged: prsItems.length,
+      issuesOpen: issuesItems.filter((issue) => issue.state === "open").length,
+      issuesClosed: issuesItems.filter((issue) => issue.state === "closed")
         .length,
-      issuesClosed: issues.data.items.filter(
-        (issue) => issue.state === "closed"
-      ).length,
+      totalCommits: allCommits.length,
       updatedAt: new Date().toISOString(),
     };
 
